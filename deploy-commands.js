@@ -1,19 +1,18 @@
 import { REST, Routes, SlashCommandBuilder } from 'discord.js';
-import { readFileSync } from "fs";
-
+import dotenv from 'dotenv';
+dotenv.config()
 // Read and parse JSON manually
-const config = JSON.parse(readFileSync("./config.json", "utf8"));
-console.log(config)
+const config = process.env
 
 const commands = [
     new SlashCommandBuilder()
-        .setName('ai')
-        .setDescription('lets chat')
-        .addStringOption(option =>
-            option.setName('message')
-                .setDescription('prompt')
-                .setRequired(true) // User can send /ping without this
-        )
+        .setName('catfacts')
+        .setDescription('Gives you a random fact about cats')
+        // .addStringOption(option =>
+        //     option.setName('message')
+        //         .setDescription('prompt')
+        //         .setRequired(true) // User can send /ping without this
+        // )
         .toJSON()
 ];
 
