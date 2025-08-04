@@ -14,12 +14,10 @@ const client = new Client({
     partials: ['CHANNEL']
 });
 
-let lastQuote;
-let aiSwitch = true;
-const ids = new Map([]);
 const coolDown = new Map([
     ['id', 'timer'],
 ]);
+const me = 'rrredx'
 
 async function coolDownUser(user, duration, channel) {
     const date = Date.now();
@@ -101,14 +99,16 @@ client.on('messageCreate', async (message) => {
     const msgAuthor = message.author.username
     const msg = message.content
     const usernameMention = message.mentions.users.first() || { username: undefined }
-
     if (msgAuthor === 'rrredx')
         message.react('😎');
 
+
     if (msg.toLocaleLowerCase() === '!catfacts') {
-        console.log('yess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        message.react('😺')
         message.reply(await catFetch())
     }
+    if (msgAuthor !== 'nunu' && msgAuthor !== me)
+        sendToChannel('1400773015796584508', `${msgAuthor}: ${msg}\n ${message.channelId}`);
 });
 // ------------------Bot DMs
 
