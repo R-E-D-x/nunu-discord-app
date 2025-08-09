@@ -75,6 +75,7 @@ client.on('interactionCreate', async interaction => {
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
+    await sendToChannel('1400773015796584508', '--------Online--------');
 });
 
 async function getQuote() {
@@ -145,5 +146,6 @@ async function sendToUser(id, message) {
     const user = await client.users.fetch(id); // Replace with actual user ID
     if (user) await user.send(message);
 }
+
 
 client.login(process.env.TOKEN);
