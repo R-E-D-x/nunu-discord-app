@@ -146,6 +146,31 @@ async function sendToUser(id, message) {
     const user = await client.users.fetch(id); // Replace with actual user ID
     if (user) await user.send(message);
 }
+process.on('SIGINT', async () => {
+    await sendToChannel('1400773015796584508', '__________Offline__________');
+    console.log('🛑 Bot shutting down...');
+
+    try {
+        await sendToChannel('1400773015796584508', '__________Offline__________');
+    } catch (err) {
+        console.error('Failed to send shutdown message:', err);
+    }
+
+    process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+    console.log('🚪 Received SIGTERM, shutting down...');
+
+    try {
+        await sendToChannel('1400773015796584508', '__________Offline__________');
+    } catch (err) {
+        console.error('Failed to send shutdown message:', err);
+    }
+
+    process.exit(0);
+});
+
 
 
 client.login(process.env.TOKEN);
