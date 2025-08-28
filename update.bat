@@ -2,5 +2,5 @@
 cd /d "C:\Bot\nunu-discord-app"
 
 echo Checking for updates...
-git pull
-npm i
+git fetch --all
+git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
