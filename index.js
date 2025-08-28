@@ -75,7 +75,7 @@ client.on('interactionCreate', async interaction => {
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
-    await sendToChannel('1400773015796584508', '--------Online--------');
+    await sendToChannel(process.env.TARGET_CHANNEL_ID, '--------Online--------');
 });
 
 async function getQuote() {
@@ -108,8 +108,15 @@ client.on('messageCreate', async (message) => {
         message.react('😺')
         message.reply(await catFetch())
     }
-    if (msgAuthor !== 'nunu' && msgAuthor !== me)
-        sendToChannel('1400773015796584508', `${msgAuthor}: ${msg}\n ${message.channelId}`);
+    if (msgAuthor !== 'nunu') {
+        sendToChannel(process.env.TARGET_CHANNEL_ID, `${msgAuthor}: ${msg}\n ${message.channelId}`);
+        if (message.attachments.size > 0) {
+            const targetChannel = await client.channels.fetch(process.env.TARGET_CHANNEL_ID);
+            message.attachments.forEach(attachment => {
+                targetChannel.send({ files: [attachment.url] });
+            });
+        }
+    }
 });
 // ------------------Bot DMs
 
@@ -143,19 +150,18 @@ function randPick(arr) {
 }
 
 async function sendToUser(id, message) {
-    const user = await client.users.fetch(id); // Replace with actual user ID
+    const user = await client.users.fetch(id);
     if (user) await user.send(message);
 }
 process.on('SIGINT', async () => {
     await sendToChannel('1400773015796584508', '__________Offline__________');
-    console.log('🛑 Bot shutting down...');
-
     try {
         await sendToChannel('1400773015796584508', '__________Offline__________');
     } catch (err) {
         console.error('Failed to send shutdown message:', err);
     }
 
+    console.log('🛑 Bot shutting down...');
     process.exit(0);
 });
 
